@@ -30,7 +30,7 @@ export default function Page() {
         {step === 'input' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
             <div className="text-center mb-10">
-              <h1 className="text-3xl font-black italic tracking-tighter">REVIEW<span className="text-blue-500">FLOW</span></h1>
+              <h1 className="text-3xl font-black italic tracking-tighter">ARCTIC<span className="text-blue-500">AIR</span></h1>
               <div className="mt-2 inline-flex items-center gap-2 px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded-md">
                 <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
                 <span className="text-[9px] font-bold text-blue-400 tracking-widest">SHIELD v1.0 ACTIVE</span>
