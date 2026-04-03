@@ -1,35 +1,37 @@
 'use client'
 
+import { sendShieldAlert } from './actions';
 import React, { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-// We wrap the content in a "Search" component to handle the URL reading
 function ReviewContent() {
   const searchParams = useSearchParams();
   
-  // This line grabs the "biz" name from the URL. 
-  // If no name is there, it defaults to "REVIEWFLOW"
   const rawBizName = searchParams.get('biz') || 'REVIEWFLOW';
-  const companyName = rawBizName.replace(/-/g, ' '); // Turns "Arctic-Air" into "Arctic Air"
+  const companyName = rawBizName.replace(/-/g, ' ');
 
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [feedback, setFeedback] = useState('');
   const [step, setStep] = useState('input');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name || !phone) {
       alert("Please enter your name and phone so we can follow up!");
       return;
     }
     setStep('sending');
     
-    setTimeout(() => {
-      const negativeWords = ['bad', 'rude', 'late', 'expensive', 'terrible', 'worst', 'scam', 'poor', 'dirty'];
-      const isNegative = negativeWords.some(word => feedback.toLowerCase().includes(word)) || feedback.length < 10;
+    // Logic check for negative sentiment
+    const negativeWords = ['bad', 'rude', 'late', 'expensive', 'terrible', 'worst', 'scam', 'poor', 'dirty'];
+    const isNegative = negativeWords.some(word => feedback.toLowerCase().includes(word)) || feedback.length < 10;
 
+    // Simulate AI processing time
+    setTimeout(async () => {
       if (isNegative) {
         setStep('shielded');
+        // FIRE THE EMAIL ALERT
+        await sendShieldAlert(name, phone, feedback, companyName);
       } else {
         setStep('positive');
       }
@@ -121,7 +123,6 @@ function ReviewContent() {
   );
 }
 
-// This is the main page that wraps everything in a "Suspense" boundary (required by Next.js for URL reading)
 export default function Page() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 text-white font-sans p-6 uppercase tracking-tight">
